@@ -1,0 +1,59 @@
+import tkinter as tk
+import jmcomic
+class SimpleApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("输入框示例")
+        self.root.geometry("300x200")
+
+        # 创建一个字符串变量，用于存储输入框的内容
+        self.input_content = tk.StringVar()
+
+        # 创建一个输入框，并将其内容绑定到变量
+        self.entry = tk.Entry(root, textvariable=self.input_content)
+        self.entry.pack()
+
+        # 创建一个“确定”按钮，点击时调用self.submit函数
+        self.submit_button = tk.Button(root, text="确定", command=self.submit)
+        self.submit_button.pack()
+
+        # 创建一个“执行”按钮，点击时调用self.execute函数
+        self.execute_button = tk.Button(root, text="执行", command=self.execute)
+        self.execute_button.pack()
+
+        # 创建一个Text widget用于显示结果
+        self.result_text = tk.Text(root, height=4, width=50)
+        self.result_text.pack()
+
+    def submit(self):
+        # 将输入框的内容保存到变量
+        self.saved_content = self.input_content.get()
+
+    def check_CONTENT(self):
+        # 初始化为True，假设所有字符都是数字
+        is_digit = True
+        for i in self.saved_content:
+            if not (ord('0') <= ord(i) <= ord('9')):
+                is_digit = False
+                break  # 一旦发现非数字字符，即可停止检查
+        return is_digit
+
+    def execute(self):
+        # 清除Text widget中的现有内容
+        self.result_text.delete('1.0', tk.END)
+        # 检查内容是否全部为数字
+        ez = self.check_CONTENT()
+        if ez:
+            # 插入新的内容
+            #jmcomic.download_album(self.saved_content)
+            self.result_text.insert(tk.END, f"老弟{self.saved_content}jm下载完成")
+        else:
+            # 插入错误信息
+            self.result_text.insert(tk.END, f"错误：{self.saved_content}不是全部数字")
+
+# 创建Tkinter窗口
+root = tk.Tk()
+app = SimpleApp(root)
+
+# 运行Tkinter事件循环
+root.mainloop()
